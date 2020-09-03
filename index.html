@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Prueba gráficos AmCharts</title>
+</head>
+<body>
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="https://www.amcharts.com/demos/">
+        <img src="icon.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+        Prueba gráficos AmCharts
+    </a>
+</nav>
+
+<div class="container mt-4 mb-4">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body text-primary">
+                    <!-- <h5 class="card-title text-center">Resumen de Cartera</h5> -->
+
+                    <!-- Styles -->
+                    <style>
+                        #chartdiv {
+                            width: 100%;
+                            height: 500px;
+                        }
+
+                    </style>
+
+                    <!-- Resources -->
+                    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+                    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+                    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+                    <!-- Chart code -->
+                    <script>
+                        am4core.ready(function() {
+
+                            // Themes begin
+                            am4core.useTheme(am4themes_animated);
+                            // Themes end
+
+                                // Create chart instance
+                            var chart = am4core.create("chartdiv", am4charts.PieChart);
+
+                            //Título de la gráfica
+                            var title = chart.titles.create();
+                            title.text = "Resumen de Cartera" ;
+                            title.fill = am4core.color("#1765b3");
+                            title.fontSize = 19;
+
+                                // Add and configure Series
+                            var pieSeries = chart.series.push(new am4charts.PieSeries());
+                            pieSeries.dataFields.value = "litres";
+                            pieSeries.dataFields.category = "country";
+                            pieSeries.labels.template.disabled = true
+
+                            // Let's cut a hole in our Pie chart the size of 30% the radius
+                            chart.innerRadius = am4core.percent(30);
+
+                            // Put a thick white border around each Slice
+                            pieSeries.slices.template.stroke = am4core.color("#fff");
+                            pieSeries.slices.template.strokeWidth = 2;
+                            pieSeries.slices.template.strokeOpacity = 1;
+                            pieSeries.slices.template
+                                // change the cursor on hover to make it apparent the object can be interacted with
+                                .cursorOverStyle = [
+                                {
+                                    "property": "cursor",
+                                    "value": "pointer"
+                                }
+                            ];
+
+                            pieSeries.alignLabels = false;
+                            pieSeries.labels.template.bent = true;
+                            pieSeries.labels.template.radius = 3;
+                            pieSeries.labels.template.padding(0,0,0,0);
+
+                            pieSeries.ticks.template.disabled = true;
+
+                            // Create a base filter effect (as if it's not there) for the hover to return to
+                            var shadow = pieSeries.slices.template.filters.push(new am4core.DropShadowFilter);
+                            shadow.opacity = 0;
+
+                                // Create hover state
+                            var hoverState = pieSeries.slices.template.states.getKey("hover"); // normally we have to create the hover state, in this case it already exists
+
+                                // Slightly shift the shadow and make it more prominent on hover
+                            var hoverShadow = hoverState.filters.push(new am4core.DropShadowFilter);
+                            hoverShadow.opacity = 0.7;
+                            hoverShadow.blur = 5;
+
+                            // Add a legend
+                            chart.legend = new am4charts.Legend();
+                            chart.legend.position = 'top'
+
+                            chart.data = [{
+                                "country": "Créditos con menos de 2 cuotas atrasadas",
+                                "litres": 501.9
+                            },{
+                                "country": "Créditos con cuotas atrasadas mayores a 2 y menores a 4",
+                                "litres": 165.8
+                            }, {
+                                "country": "Creditos con más de 4 cuotas atrasadas",
+                                "litres": 139.9
+                            }, {
+                                "country": "Créditos Vencidos",
+                                "litres": 128.3
+                            }];
+
+
+                        }); // end am4core.ready()
+                    </script>
+
+                    <!-- HTML -->
+                    <div id="chartdiv"></div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-body text-primary">
+                   <!-- <h5 class="card-title text-center">Estadística Semanal</h5> -->
+                    <!-- Styles -->
+                    <style>
+                        #chartdiv2 {
+                            width: 100%;
+                            height: 500px;
+                        }
+                    </style>
+
+                    <!-- Resources -->
+                    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+                    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+                    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+                    <!-- Chart code -->
+                    <script>
+                        am4core.ready(function() {
+
+                            // Themes begin
+                            am4core.useTheme(am4themes_animated);
+                            // Themes end
+
+                            var chart = am4core.create('chartdiv2', am4charts.XYChart)
+                            chart.colors.step = 2;
+
+                            chart.legend = new am4charts.Legend()
+                            chart.legend.position = 'top'
+                            chart.legend.paddingBottom = 20
+                            chart.legend.labels.template.maxWidth = 95
+
+                            var xAxis = chart.xAxes.push(new am4charts.CategoryAxis())
+                            xAxis.dataFields.category = 'category'
+                            xAxis.renderer.labels.template.fontSize = 12;
+                            xAxis.renderer.minGridDistance = 20;
+                            xAxis.renderer.cellStartLocation = 0.1
+                            xAxis.renderer.cellEndLocation = 0.9
+                            xAxis.renderer.grid.template.location = 0;
+
+                            var yAxis = chart.yAxes.push(new am4charts.ValueAxis());
+                            yAxis.min = 0;
+
+                            var title = chart.titles.create();
+                            title.text = "Estadística Semanal";
+                            title.fontSize = 19;
+                            title.fill = am4core.color("#1765b3");
+                            chart.tooltip.label.fontSize = 12;
+                            title.tooltipText = "Valor de cartera, ventas y recaudo \nde las últimas 3 semanas.";
+                            // Centrar texto del tooltip
+                            chart.tooltip.label.textAlign = "middle";
+
+                            function createSeries(value, name) {
+
+                                var series = chart.series.push(new am4charts.ColumnSeries())
+                                //Añadir tooltip a la columna, recibe el nombre y valoresXY
+                                series.columns.template.tooltipText = "{name}\n{categoryX}: {valueY}";
+                                series.dataFields.valueY = value
+                                series.dataFields.categoryX = 'category'
+                                series.name = name
+
+                                series.events.on("hidden", arrangeColumns);
+                                series.events.on("shown", arrangeColumns);
+
+                                /*Contenido dentro de la columna
+                                var bullet = series.bullets.push(new am4charts.LabelBullet())
+                                bullet.interactionsEnabled = false
+                                bullet.dy = 30;
+                                bullet.label.text = '{valueY}'
+                                bullet.label.fill = am4core.color('#ffffff')*/
+
+                                /*
+                                Adicionar un evento al hover, pintar la columna de rosa.
+                                let hoverState = series.columns.template.states.create("hover");
+                                hoverState.properties.fill = am4core.color("#E94F37");
+                                hoverState.properties.fillOpacity = 0.8;
+                                */
+
+                                return series;
+                            }
+
+                            chart.data = [
+                                {
+                                    category: '29/06/2020  al  05/07/2020',
+                                    first: 66,
+                                    second: 55,
+                                    third: 60
+                                },
+                                {
+                                    category: '06/07/2020  al  12/07/2020',
+                                    first: 30,
+                                    second: 78,
+                                    third: 69
+                                },
+                                {
+                                    category: '13/07/2020  al  15/07/2020',
+                                    first: 27,
+                                    second: 40,
+                                    third: 45
+                                }
+                            ]
+
+                            createSeries('first', 'Cartera');
+                            createSeries('second', 'Ventas');
+                            createSeries('third', 'Recaudo');
+
+                            /*
+                            * Método para organizar columnas en el centro de las celdas.
+                            */
+                            function arrangeColumns() {
+
+                                var series = chart.series.getIndex(0);
+
+                                var w = 1 - xAxis.renderer.cellStartLocation - (1 - xAxis.renderer.cellEndLocation);
+                                if (series.dataItems.length > 1) {
+                                    var x0 = xAxis.getX(series.dataItems.getIndex(0), "categoryX");
+                                    var x1 = xAxis.getX(series.dataItems.getIndex(1), "categoryX");
+                                    var delta = ((x1 - x0) / chart.series.length) * w;
+                                    if (am4core.isNumber(delta)) {
+                                        var middle = chart.series.length / 2;
+
+                                        var newIndex = 0;
+                                        chart.series.each(function(series) {
+                                            if (!series.isHidden && !series.isHiding) {
+                                                series.dummyData = newIndex;
+                                                newIndex++;
+                                            }
+                                            else {
+                                                series.dummyData = chart.series.indexOf(series);
+                                            }
+                                        })
+                                        var visibleCount = newIndex;
+                                        var newMiddle = visibleCount / 2;
+
+                                        chart.series.each(function(series) {
+                                            var trueIndex = chart.series.indexOf(series);
+                                            var newIndex = series.dummyData;
+
+                                            var dx = (newIndex - trueIndex + middle - newMiddle) * delta
+
+                                            series.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
+                                            series.bulletsContainer.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
+                                        })
+                                    }
+                                }
+                            }
+
+                        }); // end am4core.ready()
+                    </script>
+
+                    <!-- HTML -->
+                    <div id="chartdiv2"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12 col-md-offset-1">
+            <div class="card">
+                <div class="card-body text-primary">
+                    <!--<h5 class="card-title text-center">Resumen Gastos por Mes</h5> -->
+
+                    <!-- Styles -->
+                    <style>
+                        #chartdiv3 {
+                            width: 100%;
+                            height: 800px;
+                        }
+                    </style>
+
+                    <!-- Resources -->
+                    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+                    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+                    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+                    <!-- Chart code -->
+                    <script>
+                        am4core.ready(function() {
+
+                    // Themes begin
+                            am4core.useTheme(am4themes_animated);
+                        // Themes end
+
+                            // Create chart instance
+                            var chart = am4core.create("chartdiv3", am4charts.XYChart);
+                            chart.scrollbarX = new am4core.Scrollbar();
+
+                            //Título de la gráfica
+                            var title = chart.titles.create();
+                            title.text = "Resumen Gastos por Mes" ;
+                            title.fill = am4core.color("#1765b3");
+                            title.fontSize = 19;
+
+                            // Add data
+                            chart.data = [{
+                                "country": "NOMINA Y SERVICIOS",
+                                "visits": 3025
+                            }, {
+                                "country": "CONSTRUCCIÓN",
+                                "visits": 1882
+                            }, {
+                                "country": "IMPUESTOS",
+                                "visits": 1809
+                            }, {
+                                "country": "COMPRAS Y ALQUILER",
+                                "visits": 1322
+                            }, {
+                                "country": "BIENESTAR LABORAL",
+                                "visits": 1122
+                            }, {
+                                "country": "GASTOS DE VEHÍCULO",
+                                "visits": 2114
+                            }, {
+                                "country": "GASTOS GERENCIA",
+                                "visits": 984
+                            }, {
+                                "country": "ANULACIONES DE ENTRADA",
+                                "visits": 711
+                            }, {
+                                "country": "INVERSIONES SALIDA DE EFECTIVO",
+                                "visits": 965
+                            }, {
+                                "country": "GASTOS DE INMUEBLES",
+                                "visits": 980
+                            }, {
+                                "country": "PAGO DE FACTURAS",
+                                "visits": 443
+                            }, {
+                                "country": "DESCUENTOS",
+                                "visits": 1441
+                            }];
+
+                            // Create axes
+                            var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+                            categoryAxis.dataFields.category = "country";
+                            categoryAxis.renderer.grid.template.location = 0;
+                            categoryAxis.renderer.minGridDistance = 30;
+                            categoryAxis.renderer.labels.template.horizontalCenter = "right";
+                            categoryAxis.renderer.labels.template.verticalCenter = "middle";
+                            categoryAxis.renderer.labels.template.rotation = 270;
+                            categoryAxis.tooltip.disabled = true;
+                            categoryAxis.renderer.minHeight = 110;
+
+                            var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+                            valueAxis.renderer.minWidth = 50;
+
+                            // Create series
+                            var series = chart.series.push(new am4charts.ColumnSeries());
+                            series.sequencedInterpolation = true;
+                            series.dataFields.valueY = "visits";
+                            series.dataFields.categoryX = "country";
+                            series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
+                            series.columns.template.strokeWidth = 0;
+
+                            series.tooltip.pointerOrientation = "vertical";
+
+                            series.columns.template.column.cornerRadiusTopLeft = 10;
+                            series.columns.template.column.cornerRadiusTopRight = 10;
+                            series.columns.template.column.fillOpacity = 0.8;
+
+                            // on hover, make corner radiuses bigger
+                            var hoverState = series.columns.template.column.states.create("hover");
+                            hoverState.properties.cornerRadiusTopLeft = 0;
+                            hoverState.properties.cornerRadiusTopRight = 0;
+                            hoverState.properties.fillOpacity = 1;
+
+                            series.columns.template.adapter.add("fill", function(fill, target) {
+                                return chart.colors.getIndex(target.dataItem.index);
+                            });
+
+                            // Cursor
+                            chart.cursor = new am4charts.XYCursor();
+
+                        }); // end am4core.ready()
+                    </script>
+
+                    <!-- HTML -->
+                    <div id="chartdiv3"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body text-primary">
+                    <!-- <h5 class="card-title text-center">Estadística Mensual</h5>-->
+
+                    <!-- Styles -->
+                    <style>
+                        #chartdiv4 {
+                            width: 100%;
+                            height: 500px;
+                        }
+                    </style>
+
+                    <!-- Resources -->
+                    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+                    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+                    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+                    <!-- Chart code -->
+                    <script>
+                        am4core.ready(function() {
+
+// Themes begin
+                            am4core.useTheme(am4themes_animated);
+// Themes end
+
+                            var chart = am4core.create('chartdiv4', am4charts.XYChart)
+                            chart.colors.step = 2;
+
+                            //Título de la gráfica
+                            var title = chart.titles.create();
+                            title.text = "Estadística Mensual" ;
+                            title.fontSize = 19;
+                            title.fill = am4core.color("#1765b3");
+                            chart.tooltip.label.fontSize = 12;
+                            title.tooltipText = "Valor de cartera, ventas y recaudo \nde los últimos 11 meses.";
+                            // Centrar texto del tooltip
+                            chart.tooltip.label.textAlign = "middle";
+
+                            chart.legend = new am4charts.Legend()
+                            chart.legend.position = 'top'
+                            chart.legend.paddingBottom = 20
+                            chart.legend.labels.template.maxWidth = 95
+
+                            var xAxis = chart.xAxes.push(new am4charts.CategoryAxis())
+                            xAxis.dataFields.category = 'category'
+                            xAxis.renderer.cellStartLocation = 0.1
+                            xAxis.renderer.minGridDistance = 10;
+                            xAxis.renderer.cellEndLocation = 0.9
+                            xAxis.renderer.grid.template.location = 0;
+
+                            var yAxis = chart.yAxes.push(new am4charts.ValueAxis());
+                            yAxis.min = 0;
+
+                            function createSeries(value, name) {
+                                var series = chart.series.push(new am4charts.ColumnSeries())
+                                //Añadir tooltip a la columna, recibe el nombre y valoresXY
+                                series.columns.template.tooltipText = "{name}\n{categoryX}: {valueY}";
+                                series.dataFields.valueY = value
+                                series.dataFields.categoryX = 'category'
+                                series.name = name
+
+                                series.events.on("hidden", arrangeColumns);
+                                series.events.on("shown", arrangeColumns);
+
+                                /*Contenido dentro de la columna
+                                var bullet = series.bullets.push(new am4charts.LabelBullet())
+                                bullet.interactionsEnabled = false
+                                bullet.dy = 30;
+                                bullet.label.text = '{valueY}'
+                                bullet.label.fill = am4core.color('#ffffff') */
+
+                                return series;
+                            }
+
+                            chart.data = [
+                                {
+                                    category: 'Agosto',
+                                    first: 40,
+                                    second: 55,
+                                    third: 60
+                                },
+                                {
+                                    category: 'Septiembre',
+                                    first: 30,
+                                    second: 78,
+                                    third: 69
+                                },
+                                {
+                                    category: 'Octubre',
+                                    first: 27,
+                                    second: 40,
+                                    third: 45
+                                },
+                                {
+                                    category: 'Noviembre',
+                                    first: 50,
+                                    second: 33,
+                                    third: 22
+                                },
+                                {
+                                    category: 'Diciembre',
+                                    first: 50,
+                                    second: 33,
+                                    third: 22
+                                },
+                                {
+                                    category: 'Enero',
+                                    first: 50,
+                                    second: 33,
+                                    third: 22
+                                },
+                                {
+                                    category: 'Febrero',
+                                    first: 50,
+                                    second: 33,
+                                    third: 22
+                                },
+                                {
+                                    category: 'Marzo',
+                                    first: 50,
+                                    second: 33,
+                                    third: 22
+                                },
+                                {
+                                    category: 'Abril',
+                                    first: 50,
+                                    second: 33,
+                                    third: 22
+                                },
+                                {
+                                    category: 'Mayo',
+                                    first: 50,
+                                    second: 33,
+                                    third: 22
+                                },
+                                {
+                                    category: 'Junio',
+                                    first: 50,
+                                    second: 33,
+                                    third: 22
+                                }
+                            ]
+
+
+                            createSeries('first', 'Cartera');
+                            createSeries('second', 'Ventas');
+                            createSeries('third', 'Recaudo');
+
+                            function arrangeColumns() {
+
+                                var series = chart.series.getIndex(0);
+
+                                var w = 1 - xAxis.renderer.cellStartLocation - (1 - xAxis.renderer.cellEndLocation);
+                                if (series.dataItems.length > 1) {
+                                    var x0 = xAxis.getX(series.dataItems.getIndex(0), "categoryX");
+                                    var x1 = xAxis.getX(series.dataItems.getIndex(1), "categoryX");
+                                    var delta = ((x1 - x0) / chart.series.length) * w;
+                                    if (am4core.isNumber(delta)) {
+                                        var middle = chart.series.length / 2;
+
+                                        var newIndex = 0;
+                                        chart.series.each(function(series) {
+                                            if (!series.isHidden && !series.isHiding) {
+                                                series.dummyData = newIndex;
+                                                newIndex++;
+                                            }
+                                            else {
+                                                series.dummyData = chart.series.indexOf(series);
+                                            }
+                                        })
+                                        var visibleCount = newIndex;
+                                        var newMiddle = visibleCount / 2;
+
+                                        chart.series.each(function(series) {
+                                            var trueIndex = chart.series.indexOf(series);
+                                            var newIndex = series.dummyData;
+
+                                            var dx = (newIndex - trueIndex + middle - newMiddle) * delta
+
+                                            series.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
+                                            series.bulletsContainer.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
+                                        })
+                                    }
+                                }
+                            }
+
+                        }); // end am4core.ready()
+                    </script>
+
+                    <!-- HTML -->
+                    <div id="chartdiv4"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh5AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</body>
+</html>
