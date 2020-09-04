@@ -48,7 +48,7 @@
                             am4core.useTheme(am4themes_animated);
                             // Themes end
 
-                            // Create chart instance
+                            // Creación del chart
                             var chart = am4core.create("chartdiv", am4charts.PieChart);
                             chart.responsive.enabled = true;
 
@@ -68,7 +68,7 @@
                             chart.innerRadius = am4core.percent(40);
                             chart.tooltip.label.fontSize = 12;
 
-                            // Put a thick white border around each Slice
+                            // Definir el borde blanco de la sección en blanco.
                             /*pieSeries.slices.template.stroke = am4core.color("#fff");
                             pieSeries.slices.template.strokeWidth = 2;
                             pieSeries.slices.template.strokeOpacity = 1;
@@ -81,6 +81,7 @@
                                 }
                             ];*/
 
+                            //Se llama al color en la serie
                             pieSeries.slices.template.propertyFields.fill = "color";
 
                             pieSeries.alignLabels = false;
@@ -184,6 +185,14 @@
                             xAxis.renderer.cellEndLocation = 0.9;
                             xAxis.renderer.grid.template.location = 0;
 
+                            chart.colors.step = 2;
+
+                            chart.legend = new am4charts.Legend()
+                            chart.legend.position = 'top';
+                            chart.legend.paddingBottom = 20;
+                            chart.legend.paddingTop = 20;
+                            chart.legend.labels.template.maxWidth = 95;
+
                             chart.responsive.rules.push({
                                 relevant: function (target) {
                                     if (target.pixelWidth <= 450) {
@@ -197,13 +206,6 @@
                                 }
                             });
 
-                            chart.colors.step = 2;
-
-                            chart.legend = new am4charts.Legend()
-                            chart.legend.position = 'top';
-                            chart.legend.paddingBottom = 20;
-                            chart.legend.paddingTop = 20;
-                            chart.legend.labels.template.maxWidth = 95;
 
                             var yAxis = chart.yAxes.push(new am4charts.ValueAxis());
                             yAxis.min = 0;
@@ -495,20 +497,6 @@
                             xAxis.renderer.cellEndLocation = 0.9
                             xAxis.renderer.grid.template.location = 0;
 
-
-                            chart.responsive.rules.push({
-                                relevant: function (target) {
-                                    if (target.pixelWidth <= 1000) {
-                                        xAxis.renderer.labels.template.rotation = 270;
-                                        xAxis.renderer.labels.template.horizontalCenter = "middle";
-                                        xAxis.renderer.labels.template.verticalCenter = "left";
-                                        return true;
-                                    }
-                                    xAxis.renderer.labels.template.rotation = 0;
-                                    xAxis.renderer.labels.template.horizontalCenter = "middle";
-                                }
-                            });
-
                             chart.colors.step = 2;
 
                             //Título de la gráfica
@@ -630,6 +618,22 @@
                             createSeries('first', 'Cartera');
                             createSeries('second', 'Ventas');
                             createSeries('third', 'Recaudo');
+
+                            chart.responsive.rules.push({
+                                relevant: function (target) {
+                                    if (target.pixelWidth <= 1000) {
+                                        xAxis.renderer.labels.template.rotation = 270;
+                                        xAxis.renderer.labels.template.horizontalCenter = "right";
+                                        xAxis.renderer.labels.template.verticalCenter = "middle";
+                                        arrangeColumns();
+                                        return true;
+                                    } else {
+                                        xAxis.renderer.labels.template.rotation = 0;
+                                        xAxis.renderer.labels.template.horizontalCenter = "middle";
+                                        arrangeColumns();
+                                    }
+                                }
+                            });
 
                             function arrangeColumns() {
 
